@@ -36,7 +36,7 @@ To start the REST API server:
 ```bash
 py -m uvicorn api:app --reload
 ```
-The API will be available at `http://127.0.0.1:8000`. You can view the interactive documentation at `http://127.0.0.1:8000/docs`.
+You can view the interactive documentation of the API at `http://127.0.0.1:8000/docs`.
 
 ### Running the Streamlit Dashboard
 To start the interactive web dashboard:
