@@ -34,7 +34,7 @@ Before running the API or Dashboard, you must train the models to generate the `
 ### Running the FastAPI Backend
 To start the REST API server:
 ```bash
-uvicorn api:app --reload
+py -m uvicorn api:app --reload
 ```
 The API will be available at `http://127.0.0.1:8000`. You can view the interactive documentation at `http://127.0.0.1:8000/docs`.
 
