@@ -4,14 +4,12 @@ nb = nbf.v4.new_notebook()
 
 cells = []
 
-# Cell 1: Markdown
 cells.append(nbf.v4.new_markdown_cell("""\
 # Heart Disease Prediction
 ## 1. Dataset Collection & Preparation
 This notebook loads the dataset, performs EDA, preprocesses the data, trains multiple models, evaluates them, and performs hyperparameter tuning.
 """))
 
-# Cell 2: Imports
 cells.append(nbf.v4.new_code_cell("""\
 import pandas as pd
 import numpy as np
@@ -29,7 +27,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import f1_score, classification_report, confusion_matrix
 """))
 
-# Cell 3: Load Data
 cells.append(nbf.v4.new_code_cell("""\
 # Load the dataset
 df = pd.read_csv('heart.csv')
@@ -37,7 +34,6 @@ display(df.head())
 display(df.info())
 """))
 
-# Cell 4: EDA
 cells.append(nbf.v4.new_code_cell("""\
 # Exploratory Data Analysis
 plt.figure(figsize=(10, 5))
@@ -51,7 +47,6 @@ plt.title('Age Distribution by Heart Disease')
 plt.show()
 """))
 
-# Cell 5: Feature Engineering & Preprocessing
 cells.append(nbf.v4.new_code_cell("""\
 # Identify numerical and categorical columns
 categorical_cols = ['Sex', 'ChestPainType', 'FastingBS', 'RestingECG', 'ExerciseAngina', 'ST_Slope']
@@ -73,7 +68,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 print(f"Training shape: {X_train.shape}, Testing shape: {X_test.shape}")
 """))
 
-# Cell 6: Model Training
 cells.append(nbf.v4.new_code_cell("""\
 # Define models
 models = {
@@ -100,7 +94,6 @@ for name, model in models.items():
     print(classification_report(y_test, y_pred))
 """))
 
-# Cell 7: Hyperparameter Tuning
 cells.append(nbf.v4.new_code_cell("""\
 # Tune Random Forest as it usually performs best
 print("Tuning Random Forest...")
@@ -129,7 +122,7 @@ print("--- Random Forest Tuned ---")
 print(f"Test F1 Score: {f1_score(y_test, y_pred_tuned):.4f}")
 """))
 
-# Cell 8: Save Models
+
 cells.append(nbf.v4.new_code_cell("""\
 # Save all models for API deployment
 joblib.dump(trained_models['Decision Tree'], 'dt_model.pkl')

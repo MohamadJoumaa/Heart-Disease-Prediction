@@ -5,7 +5,6 @@ import pandas as pd
 
 app = FastAPI(title="Heart Disease Prediction API")
 
-# Load models and preprocessor
 try:
     models = {
         'Decision Tree': joblib.load('dt_model.pkl'),
@@ -42,7 +41,6 @@ def predict(data: PatientData):
     if data.ModelType not in models:
         raise HTTPException(status_code=400, detail=f"ModelType must be one of {list(models.keys())}")
     
-    # Create DataFrame from input data
     input_dict = data.dict(exclude={'ModelType'})
     input_df = pd.DataFrame([input_dict])
     
