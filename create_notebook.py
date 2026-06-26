@@ -32,6 +32,23 @@ cells.append(nbf.v4.new_code_cell("""\
 df = pd.read_csv('heart.csv')
 display(df.head())
 display(df.info())
+
+# --- DATA CLEANING ---
+print(f"Duplicates before cleaning: {df.duplicated().sum()}")
+df.drop_duplicates(inplace=True)
+
+print(f"Missing values before cleaning:\\n{df.isnull().sum()}")
+# Simple imputation for numerical/categorical or just drop
+# Since it's a medical dataset, let's drop rows with missing critical values or fill them
+df.dropna(inplace=True)
+
+# Additional cleaning: e.g., Removing impossible values like zero resting BP or Cholesterol if that indicates missing data
+# Some datasets use 0 as a missing value for Cholesterol or BP
+df = df[df['RestingBP'] > 0]
+# Depending on the dataset, Cholesterol = 0 might be missing data, but let's just do a basic drop
+# df = df[df['Cholesterol'] > 0] 
+
+print(f"Dataset shape after cleaning: {df.shape}")
 """))
 
 cells.append(nbf.v4.new_code_cell("""\

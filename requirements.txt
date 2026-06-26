@@ -9,3 +9,4 @@ jupyter
 nbformat
 joblib
 pydantic
+plotly
