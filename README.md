@@ -1,46 +1,86 @@
-# Heart Disease Prediction AI/ML Project
+# Heart Disease Prediction
 
-## 1. Project Proposal & Problem Definition
-**Problem:** Heart disease is a leading cause of mortality globally. Early detection can save lives by allowing for timely medical intervention.
-**Approach:** This project builds machine learning models to predict the presence of heart disease based on clinical parameters such as age, sex, cholesterol levels, resting blood pressure, and ECG results. We evaluate Decision Trees, Random Forests, and K-Nearest Neighbors (KNN) algorithms.
-**Expected Outcomes:** An accurate machine learning model deployed via a FastAPI backend and a Streamlit dashboard, providing an interactive UI for healthcare professionals or users to predict heart disease risk.
+**Live demo:** [https://heartdiseasepredictionss.streamlit.app/](https://heartdiseasepredictionss.streamlit.app/)
 
-## 2. Project Structure
-- `notebook.ipynb`: Jupyter notebook containing EDA, Feature Engineering, Model Training, Evaluation, and Hyperparameter Tuning.
-- `api.py`: FastAPI server serving the trained models via a `/predict` REST endpoint.
-- `dashboard.py`: Streamlit web interface for interactive predictions without needing to call the API manually.
-- `requirements.txt`: Python dependencies.
-- `heart.csv`: The dataset.
+Classify heart-disease risk from routine clinical features (age, sex, cholesterol, resting blood pressure, ECG, and related measurements). This is a **demo / portfolio project**, not a medical diagnostic tool — predictions are educational only and are not a substitute for professional care.
 
-## 3. Setup Instructions
-### Prerequisites
-Ensure you have Python 3.8+ installed.
+## Problem
 
-### Installation
-1. Clone the repository or navigate to the project directory.
-2. Install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Heart disease is a leading cause of death worldwide. The goal here is a small, end-to-end ML app: train classifiers on tabular clinical data, compare them, then serve predictions through a REST API and an interactive dashboard.
 
-### Running the Notebook and Training Models
-Before running the API or Dashboard, you must train the models to generate the `.pkl` files.
-1. Open the Jupyter Notebook:
-   ```bash
-   jupyter notebook notebook.ipynb
-   ```
-2. Run all cells in the notebook. This will perform the analysis and save `dt_model.pkl`, `rf_model.pkl`, and `knn_model.pkl` to the directory.
+## Models & results
 
-### Running the FastAPI Backend
-To start the REST API server:
+Three scikit-learn classifiers, trained in `notebook.ipynb` (80/20 stratified split, F1 as the primary metric):
+
+| Model | Test accuracy | Test F1 |
+| --- | --- | --- |
+| Decision Tree | 0.78 | 0.80 |
+| Random Forest | 0.90 | 0.91 |
+| K-Nearest Neighbors (KNN) | 0.89 | 0.90 |
+
+Random Forest was also tuned with 5-fold `GridSearchCV` (`n_estimators`, `max_depth`, `min_samples_split`): **CV F1 0.89**, **test F1 0.90**. The dashboard and API load that tuned forest as `rf_model.pkl`.
+
+## Stack
+
+- **Scikit-learn** — preprocessing pipelines, Decision Tree / Random Forest / KNN, evaluation
+- **FastAPI** — `/predict` REST endpoint
+- **Streamlit** — interactive UI (live demo above)
+- **pandas**, **joblib**, **Jupyter** — data, model persistence, notebook workflow
+
+## Project layout
+
+| File | Role |
+| --- | --- |
+| `notebook.ipynb` | EDA, training, evaluation, hyperparameter tuning |
+| `api.py` | FastAPI server |
+| `dashboard.py` | Streamlit app |
+| `heart.csv` | Training / demo dataset |
+| `dt_model.pkl`, `rf_model.pkl`, `knn_model.pkl` | Pretrained pipelines so the demo runs without retraining |
+| `requirements.txt` | Python dependencies |
+
+## Setup
+
+Python 3.8+ (3.11 works well). Prefer `python -m …` so the same commands work on Linux, macOS, and Windows. On Windows you can use `py -m` instead of `python -m` if that is how Python is installed.
+
 ```bash
-py -m uvicorn api:app --reload
-```
-You can view the interactive documentation of the API at `http://127.0.0.1:8000/docs`.
+git clone https://github.com/MohamadJoumaa/Heart-Disease-Prediction.git
+cd Heart-Disease-Prediction
 
-### Running the Streamlit Dashboard
-To start the interactive web dashboard:
-```bash
-streamlit run dashboard.py
+python -m venv .venv
+# Linux / macOS
+source .venv/bin/activate
+# Windows (cmd): .venv\Scripts\activate.bat
+# Windows (PowerShell): .venv\Scripts\Activate.ps1
+
+python -m pip install -r requirements.txt
 ```
-This will open the application in your default web browser where you can input patient data and switch between the trained models.
+
+### Streamlit dashboard
+
+The committed `.pkl` files are enough to run the UI:
+
+```bash
+python -m streamlit run dashboard.py
+```
+
+### FastAPI backend
+
+```bash
+python -m uvicorn api:app --reload
+```
+
+Open interactive docs at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+### Retrain models (optional)
+
+To regenerate `dt_model.pkl`, `rf_model.pkl`, and `knn_model.pkl`:
+
+```bash
+python -m jupyter notebook notebook.ipynb
+```
+
+Run all cells. Retraining is not required for the live demo or a local dashboard/API session.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
